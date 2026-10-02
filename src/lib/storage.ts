@@ -1,0 +1,44 @@
+/**
+ * Storage Abstraction Layer
+ * Encapsulates client persistence behind an swappable interface so it can be seamlessly
+ * replaced with IndexedDB, Cloud Firestore, PostgreSQL, or a REST API backend.
+ */
+
+export interface StorageAdapter {
+  getItem: (key: string) => string | null | Promise<string | null>;
+  setItem: (key: string, value: string) => void | Promise<void>;
+  removeItem: (key: string) => void | Promise<void>;
+}
+
+class LocalStorageAdapter implements StorageAdapter {
+  getItem(key: string): string | null {
+    if (typeof window === 'undefined') return null;
+    try {
+      return window.localStorage.getItem(key);
+    } catch (err) {
+      console.error(`[StorageAdapter] Failed reading key "${key}":`, err);
+      return null;
+    }
+  }
+
+  setItem(key: string, value: string): void {
+    if (typeof window === 'undefined') return;
+    try {
+      window.localStorage.setItem(key, value);
+    } catch (err) {
+      console.error(`[StorageAdapter] Failed writing key "${key}":`, err);
+    }
+  }
+
+  removeItem(key: string): void {
+    if (typeof window === 'undefined') return;
+    try {
+      window.localStorage.removeItem(key);
+    } catch (err) {
+      console.error(`[StorageAdapter] Failed removing key "${key}":`, err);
+    }
+  }
+}
+
+// Default exportable adapter instance
+export const appStorage: StorageAdapter = new LocalStorageAdapter();
