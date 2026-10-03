@@ -1,12 +1,13 @@
 import React from 'react';
+import { NavLink } from 'react-router-dom';
 import { TabSection } from '../types/workout';
 import { useTimerStore } from '../store/timerStore';
 import { useWorkoutStore } from '../store/workoutStore';
 import { BarChart3, Dumbbell, Leaf, Timer } from 'lucide-react';
 
 interface FloatingBarProps {
-  currentTab: TabSection;
-  onSelectTab: (tab: TabSection) => void;
+  currentTab?: TabSection;
+  onSelectTab?: (tab: TabSection) => void;
 }
 
 export const FloatingBar: React.FC<FloatingBarProps> = ({ currentTab, onSelectTab }) => {
@@ -20,11 +21,17 @@ export const FloatingBar: React.FC<FloatingBarProps> = ({ currentTab, onSelectTa
       window.matchMedia &&
       window.matchMedia('(prefers-color-scheme: light)').matches);
 
-  const tabs: { id: TabSection; label: string; icon: React.FC<{ className?: string }> }[] = [
-    { id: 'main', label: 'Sanctuary', icon: Leaf },
-    { id: 'workouts', label: 'Routines', icon: Dumbbell },
-    { id: 'timer', label: 'Zen Timer', icon: Timer },
-    { id: 'dashboard', label: 'Analytics', icon: BarChart3 },
+  const tabs: {
+    id: TabSection;
+    to: string;
+    label: string;
+    end?: boolean;
+    icon: React.FC<{ className?: string }>;
+  }[] = [
+    { id: 'main', to: '/', end: true, label: 'Sanctuary', icon: Leaf },
+    { id: 'workouts', to: '/workouts', label: 'Routines', icon: Dumbbell },
+    { id: 'timer', to: '/timer', label: 'Zen Timer', icon: Timer },
+    { id: 'dashboard', to: '/dashboard', label: 'Analytics', icon: BarChart3 },
   ];
 
   return (
@@ -36,46 +43,64 @@ export const FloatingBar: React.FC<FloatingBarProps> = ({ currentTab, onSelectTa
       <div className="grid grid-cols-4 gap-1 items-center" role="tablist">
         {tabs.map((tab) => {
           const Icon = tab.icon;
-          const isActive = currentTab === tab.id;
           const showDot =
             (tab.id === 'timer' && isRunning) ||
             (tab.id === 'workouts' && Boolean(activeSession));
 
           return (
-            <button
+            <NavLink
               key={tab.id}
+              to={tab.to}
+              end={tab.end}
               role="tab"
-              aria-selected={isActive}
               aria-label={tab.label}
-              onClick={() => onSelectTab(tab.id)}
-              className={`relative flex flex-col items-center justify-center py-2 px-1 rounded-xl transition-all duration-150 min-h-[44px] cursor-pointer ${
-                isActive
-                  ? isLight
-                    ? 'bg-[#ece8df] text-[#1d1b18] font-bold shadow-sm'
-                    : 'bg-[#74a87c]/18 text-[#9dd3a4] font-bold shadow-sm'
-                  : 'text-token-muted hover:text-token-primary hover:bg-surface-tertiary/40'
-              }`}
+              onClick={() => onSelectTab?.(tab.id)}
+              className={({ isActive: navActive }) => {
+                const isActive = navActive || currentTab === tab.id;
+                return `relative flex flex-col items-center justify-center py-2 px-1 rounded-xl transition-all duration-150 min-h-[44px] cursor-pointer ${
+                  isActive
+                    ? isLight
+                      ? 'bg-[#ece8df] text-[#1d1b18] font-bold shadow-sm'
+                      : 'bg-[#74a87c]/18 text-[#9dd3a4] font-bold shadow-sm'
+                    : 'text-token-muted hover:text-token-primary hover:bg-surface-tertiary/40'
+                }`;
+              }}
             >
-              <div className="relative">
-                <Icon
-                  className={`h-5 w-5 transition-transform ${
-                    isActive ? (isLight ? 'scale-110 text-[#1d1b18]' : 'scale-110 text-[#9dd3a4]') : ''
-                  }`}
-                />
-                {showDot && (
-                  <span
-                    className={`absolute -top-1 -right-1 h-2 w-2 rounded-full ring-2 ring-surface ${
-                      tab.id === 'timer'
-                        ? isLight ? 'bg-[#466645] animate-pulse' : 'bg-[#9dd3a4] animate-pulse'
-                        : isLight ? 'bg-[#c56d36]' : 'bg-[#d9c3a5]'
-                    }`}
-                  />
-                )}
-              </div>
-              <span className="text-[11px] tracking-tight mt-1 leading-none select-none font-medium">
-                {tab.label}
-              </span>
-            </button>
+              {({ isActive: navActive }) => {
+                const isActive = navActive || currentTab === tab.id;
+                return (
+                  <>
+                    <div className="relative">
+                      <Icon
+                        className={`h-5 w-5 transition-transform ${
+                          isActive
+                            ? isLight
+                              ? 'scale-110 text-[#1d1b18]'
+                              : 'scale-110 text-[#9dd3a4]'
+                            : ''
+                        }`}
+                      />
+                      {showDot && (
+                        <span
+                          className={`absolute -top-1 -right-1 h-2 w-2 rounded-full ring-2 ring-surface ${
+                            tab.id === 'timer'
+                              ? isLight
+                                ? 'bg-[#466645] animate-pulse'
+                                : 'bg-[#9dd3a4] animate-pulse'
+                              : isLight
+                              ? 'bg-[#c56d36]'
+                              : 'bg-[#d9c3a5]'
+                          }`}
+                        />
+                      )}
+                    </div>
+                    <span className="text-[11px] tracking-tight mt-1 leading-none select-none font-medium">
+                      {tab.label}
+                    </span>
+                  </>
+                );
+              }}
+            </NavLink>
           );
         })}
       </div>

@@ -2,13 +2,15 @@ import React, { useMemo } from 'react';
 import { formatDateIso, getTodaysWorkout } from '../lib/schedule';
 import { useWorkoutStore } from '../store/workoutStore';
 import { Notification } from './Notification';
+import { useNavigate } from 'react-router-dom';
 import { TabSection } from '../types/workout';
 
 interface NotificationHostProps {
-  onNavigateTab: (tab: TabSection) => void;
+  onNavigateTab?: (tab: TabSection) => void;
 }
 
 export const NotificationHost: React.FC<NotificationHostProps> = ({ onNavigateTab }) => {
+  const navigate = useNavigate();
   const {
     routines,
     activeRoutineId,
@@ -50,7 +52,11 @@ export const NotificationHost: React.FC<NotificationHostProps> = ({ onNavigateTa
 
   const handleOpen = () => {
     startSession(activeRoutine.id, todaysWorkout.weekday);
-    onNavigateTab('workouts');
+    if (onNavigateTab) {
+      onNavigateTab('workouts');
+    } else {
+      navigate('/workouts');
+    }
   };
 
   const handleDismiss = () => {

@@ -17,6 +17,7 @@ export const RoutineBuilder: React.FC<RoutineBuilderProps> = ({
   onCancel,
 }) => {
   const [name, setName] = useState(initialRoutine?.name || '');
+  const [nameTouched, setNameTouched] = useState(false);
   const [previewExerciseId, setPreviewExerciseId] = useState<string | null>(null);
   const [daysPerWeek, setDaysPerWeek] = useState<number>(
     initialRoutine?.daysPerWeek || 3
@@ -61,7 +62,8 @@ export const RoutineBuilder: React.FC<RoutineBuilderProps> = ({
   const [modalTargetWeekday, setModalTargetWeekday] = useState<Weekday | null>(null);
 
   const isValidDaysCount = selectedWeekdays.length === daysPerWeek;
-  const hasValidName = name.trim().length > 0;
+  const isDaysPerWeekValid = daysPerWeek >= 1 && daysPerWeek <= 7;
+  const hasValidName = name.trim().length >= 2;
 
   const toggleWeekday = (weekday: Weekday) => {
     if (selectedWeekdays.includes(weekday)) {
@@ -143,7 +145,8 @@ export const RoutineBuilder: React.FC<RoutineBuilderProps> = ({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!isValidDaysCount || !hasValidName) return;
+    setNameTouched(true);
+    if (!isValidDaysCount || !hasValidName || !isDaysPerWeekValid) return;
 
     const daysPayload: WorkoutDay[] = selectedWeekdays.map((wd) => dayConfigs[wd]);
 
@@ -195,10 +198,22 @@ export const RoutineBuilder: React.FC<RoutineBuilderProps> = ({
               type="text"
               required
               value={name}
-              onChange={(e) => setName(e.target.value)}
+              onBlur={() => setNameTouched(true)}
+              onChange={(e) => {
+                setName(e.target.value);
+                if (!nameTouched) setNameTouched(true);
+              }}
               placeholder="e.g., Push / Pull / Legs Hypertrophy, 4-Day Strength"
-              className="w-full px-4 py-2.5 input-token rounded-xl text-sm"
+              className={`w-full px-4 py-2.5 input-token rounded-xl text-sm ${
+                nameTouched && !hasValidName ? 'border-[#ffb4ab] text-[#ffb4ab] bg-[#ffb4ab]/10' : ''
+              }`}
             />
+            {nameTouched && !hasValidName && (
+              <p className="text-xs text-[#ffb4ab] flex items-center gap-1 mt-1 font-medium">
+                <AlertCircle className="h-3.5 w-3.5 shrink-0" />
+                <span>Routine title must contain at least 2 characters.</span>
+              </p>
+            )}
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 pt-2">

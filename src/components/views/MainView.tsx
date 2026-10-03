@@ -18,14 +18,31 @@ import {
   Sparkles,
   Trophy,
 } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { MainViewSkeleton } from '../skeleton/PageSkeleton';
 import { ExerciseDetailModal } from '../ExerciseDetailModal';
 import { SanctuaryGauge } from '../SanctuaryGauge';
 
 interface MainViewProps {
-  onNavigateTab: (tab: TabSection) => void;
+  onNavigateTab?: (tab: TabSection) => void;
+  isLoading?: boolean;
 }
 
-export const MainView: React.FC<MainViewProps> = ({ onNavigateTab }) => {
+export const MainView: React.FC<MainViewProps> = ({ onNavigateTab, isLoading = false }) => {
+  const navigate = useNavigate();
+  const navigateTo = (tab: TabSection) => {
+    if (onNavigateTab) {
+      onNavigateTab(tab);
+    } else {
+      const map: Record<TabSection, string> = {
+        main: '/',
+        workouts: '/workouts',
+        timer: '/timer',
+        dashboard: '/dashboard',
+      };
+      navigate(map[tab] || '/');
+    }
+  };
   const [selectedExerciseId, setSelectedExerciseId] = useState<string | null>(null);
   const {
     routines,
@@ -34,7 +51,12 @@ export const MainView: React.FC<MainViewProps> = ({ onNavigateTab }) => {
     settings,
     startSession,
     activeSession,
+    isHydrated,
   } = useWorkoutStore();
+
+  if (isLoading || (!isHydrated && routines.length === 0)) {
+    return <MainViewSkeleton />;
+  }
 
   const isLight =
     settings.theme === 'light' ||
@@ -90,7 +112,7 @@ export const MainView: React.FC<MainViewProps> = ({ onNavigateTab }) => {
   const handleStartToday = () => {
     if (!activeRoutine || !todaysWorkout) return;
     startSession(activeRoutine.id, todaysWorkout.weekday);
-    onNavigateTab('workouts');
+    navigateTo('workouts');
   };
 
   return (
@@ -245,7 +267,7 @@ export const MainView: React.FC<MainViewProps> = ({ onNavigateTab }) => {
               {activeSession ? (
                 <button
                   type="button"
-                  onClick={() => onNavigateTab('workouts')}
+                  onClick={() => navigateTo('workouts')}
                   className="min-h-[52px] px-8 rounded-2xl btn-primary-token flex items-center justify-center gap-2.5 text-sm cursor-pointer"
                 >
                   <Dumbbell className="h-4 w-4" />
@@ -264,7 +286,7 @@ export const MainView: React.FC<MainViewProps> = ({ onNavigateTab }) => {
 
               <button
                 type="button"
-                onClick={() => onNavigateTab('timer')}
+                onClick={() => navigateTo('timer')}
                 className="min-h-[52px] px-6 rounded-2xl btn-secondary-token text-sm flex items-center justify-center gap-2 cursor-pointer"
               >
                 <Clock className={`h-4 w-4 ${isLight ? 'text-[#466645]' : 'text-[#d9c3a5]'}`} />
@@ -326,7 +348,7 @@ export const MainView: React.FC<MainViewProps> = ({ onNavigateTab }) => {
                     type="button"
                     onClick={() => {
                       startSession(activeRoutine?.id || '', nextWorkout.day.weekday);
-                      onNavigateTab('workouts');
+                      navigateTo('workouts');
                     }}
                     className="min-h-[48px] px-6 rounded-2xl btn-secondary-token text-xs flex items-center gap-2 cursor-pointer"
                   >
@@ -345,7 +367,7 @@ export const MainView: React.FC<MainViewProps> = ({ onNavigateTab }) => {
                 </p>
                 <button
                   type="button"
-                  onClick={() => onNavigateTab('workouts')}
+                  onClick={() => navigateTo('workouts')}
                   className="mt-4 min-h-[48px] px-5 py-2.5 rounded-2xl btn-primary-token text-xs cursor-pointer"
                 >
                   Configure Routines
@@ -377,7 +399,7 @@ export const MainView: React.FC<MainViewProps> = ({ onNavigateTab }) => {
           <div className="flex items-center justify-between border-t border-token pt-3">
             <button
               type="button"
-              onClick={() => onNavigateTab('workouts')}
+              onClick={() => navigateTo('workouts')}
               className={`text-xs font-semibold hover:underline flex items-center gap-1.5 transition-opacity cursor-pointer ${
                 isLight ? 'text-[#466645]' : 'text-[#9dd3a4]'
               }`}
@@ -415,7 +437,7 @@ export const MainView: React.FC<MainViewProps> = ({ onNavigateTab }) => {
           <div className="flex items-center justify-between border-t border-token pt-3">
             <button
               type="button"
-              onClick={() => onNavigateTab('dashboard')}
+              onClick={() => navigateTo('dashboard')}
               className={`text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer ${
                 isLight ? 'text-[#466645] hover:text-[#1c1c16]' : 'text-token-secondary hover:text-[#9dd3a4]'
               }`}

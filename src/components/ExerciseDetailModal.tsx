@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { fetchExerciseById, getExerciseApiStatus } from '../lib/exerciseApi';
 import { useWorkoutStore } from '../store/workoutStore';
 import { Exercise } from '../types/workout';
+import { ExerciseDetailSkeleton } from './skeleton/PageSkeleton';
 import {
   Activity,
   AlertCircle,
@@ -196,10 +197,12 @@ export const ExerciseDetailModal: React.FC<ExerciseDetailModalProps> = ({
         {/* Scrollable Body */}
         <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-6">
           {isLoading && !exercise ? (
-            <div className="flex flex-col items-center justify-center py-20 text-token-muted gap-3">
-              <Loader2 className="h-9 w-9 animate-spin text-[#74a87c]" />
-              <p className="text-sm font-semibold text-token-primary">Loading Exercise Data</p>
-              <p className="text-xs font-mono text-token-muted">Fetching demonstration GIF and biomechanical guide...</p>
+            <div className="space-y-4">
+              <div className="flex items-center gap-2 text-xs text-token-muted px-1 font-mono">
+                <Loader2 className="h-3.5 w-3.5 animate-spin text-[#74a87c]" />
+                <span>Loading exercise biomechanics & demonstration...</span>
+              </div>
+              <ExerciseDetailSkeleton />
             </div>
           ) : error && !exercise ? (
             <div className="p-4 rounded-2xl bg-[#ffb4ab]/10 border border-[#ffb4ab]/25 text-[#ffb4ab] text-xs flex items-center justify-between gap-3">

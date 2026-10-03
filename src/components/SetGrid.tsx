@@ -158,93 +158,110 @@ export const SetGrid: React.FC<SetGridProps> = ({
                     </span>
                   </td>
 
-                  {/* Reps Input with Floor Adjusters */}
+                  {/* Reps Input with Floor Adjusters & Validation */}
                   <td className="py-3 px-2">
-                    <div className="flex items-center gap-1.5 max-w-[144px]">
-                      <button
-                        type="button"
-                        aria-label={`Decrease reps for set ${sIdx + 1}`}
-                        onClick={() =>
-                          onUpdateSet(sIdx, Math.max(0, set.reps - 1), set.weight)
-                        }
-                        className="h-9 w-9 shrink-0 rounded-xl bg-surface-secondary hover:bg-surface-tertiary text-token-secondary border border-token flex items-center justify-center transition-colors active:scale-95 cursor-pointer"
-                      >
-                        <Minus className="h-3.5 w-3.5" />
-                      </button>
-                      <input
-                        type="number"
-                        min="0"
-                        max="250"
-                        value={set.reps}
-                        onChange={(e) =>
-                          onUpdateSet(
-                            sIdx,
-                            parseInt(e.target.value, 10) || 0,
-                            set.weight
-                          )
-                        }
-                        aria-label={`Reps for set ${sIdx + 1}`}
-                        className="w-14 py-1.5 px-1 text-center input-token rounded-xl text-sm font-mono font-bold"
-                      />
-                      <button
-                        type="button"
-                        aria-label={`Increase reps for set ${sIdx + 1}`}
-                        onClick={() =>
-                          onUpdateSet(sIdx, set.reps + 1, set.weight)
-                        }
-                        className="h-9 w-9 shrink-0 rounded-xl bg-surface-secondary hover:bg-surface-tertiary text-token-secondary border border-token flex items-center justify-center transition-colors active:scale-95 cursor-pointer"
-                      >
-                        <Plus className="h-3.5 w-3.5" />
-                      </button>
+                    <div className="flex flex-col">
+                      <div className="flex items-center gap-1.5 max-w-[144px]">
+                        <button
+                          type="button"
+                          aria-label={`Decrease reps for set ${sIdx + 1}`}
+                          onClick={() =>
+                            onUpdateSet(sIdx, Math.max(0, set.reps - 1), set.weight)
+                          }
+                          className="h-9 w-9 shrink-0 rounded-xl bg-surface-secondary hover:bg-surface-tertiary text-token-secondary border border-token flex items-center justify-center transition-colors active:scale-95 cursor-pointer"
+                        >
+                          <Minus className="h-3.5 w-3.5" />
+                        </button>
+                        <input
+                          type="number"
+                          min="0"
+                          max="250"
+                          value={set.reps}
+                          onChange={(e) => {
+                            const val = parseInt(e.target.value, 10);
+                            onUpdateSet(sIdx, isNaN(val) ? 0 : val, set.weight);
+                          }}
+                          aria-label={`Reps for set ${sIdx + 1}`}
+                          className={`w-14 py-1.5 px-1 text-center input-token rounded-xl text-sm font-mono font-bold ${
+                            set.reps < 0 || set.reps > 250
+                              ? 'border-[#ffb4ab] text-[#ffb4ab] bg-[#ffb4ab]/10 focus:ring-[#ffb4ab]'
+                              : ''
+                          }`}
+                        />
+                        <button
+                          type="button"
+                          aria-label={`Increase reps for set ${sIdx + 1}`}
+                          onClick={() =>
+                            onUpdateSet(sIdx, set.reps + 1, set.weight)
+                          }
+                          className="h-9 w-9 shrink-0 rounded-xl bg-surface-secondary hover:bg-surface-tertiary text-token-secondary border border-token flex items-center justify-center transition-colors active:scale-95 cursor-pointer"
+                        >
+                          <Plus className="h-3.5 w-3.5" />
+                        </button>
+                      </div>
+                      {(set.reps < 0 || set.reps > 250) && (
+                        <span className="text-[10px] text-[#ffb4ab] font-mono mt-0.5">
+                          Reps must be 0–250
+                        </span>
+                      )}
                     </div>
                   </td>
 
-                  {/* Weight / Load Input with Floor Adjusters */}
+                  {/* Weight / Load Input with Floor Adjusters & Validation */}
                   <td className="py-3 px-2">
-                    <div className="flex items-center gap-1.5 max-w-[154px]">
-                      <button
-                        type="button"
-                        aria-label={`Decrease weight for set ${sIdx + 1}`}
-                        onClick={() =>
-                          onUpdateSet(
-                            sIdx,
-                            set.reps,
-                            Math.max(0, Number((set.weight - 2.5).toFixed(1)))
-                          )
-                        }
-                        className="h-9 w-9 shrink-0 rounded-xl bg-surface-secondary hover:bg-surface-tertiary text-token-secondary border border-token flex items-center justify-center transition-colors active:scale-95 cursor-pointer"
-                      >
-                        <Minus className="h-3.5 w-3.5" />
-                      </button>
-                      <input
-                        type="number"
-                        min="0"
-                        step="0.5"
-                        value={set.weight}
-                        onChange={(e) =>
-                          onUpdateSet(
-                            sIdx,
-                            set.reps,
-                            parseFloat(e.target.value) || 0
-                          )
-                        }
-                        aria-label={`Weight for set ${sIdx + 1} in ${weightUnit}`}
-                        className="w-16 py-1.5 px-1 text-center input-token rounded-xl text-sm font-mono font-bold"
-                      />
-                      <button
-                        type="button"
-                        aria-label={`Increase weight for set ${sIdx + 1}`}
-                        onClick={() =>
-                          onUpdateSet(
-                            sIdx,
-                            set.reps,
-                            Number((set.weight + 2.5).toFixed(1))
-                          )
-                        }
-                        className="h-9 w-9 shrink-0 rounded-xl bg-surface-secondary hover:bg-surface-tertiary text-token-secondary border border-token flex items-center justify-center transition-colors active:scale-95 cursor-pointer"
-                      >
-                        <Plus className="h-3.5 w-3.5" />
-                      </button>
+                    <div className="flex flex-col">
+                      <div className="flex items-center gap-1.5 max-w-[154px]">
+                        <button
+                          type="button"
+                          aria-label={`Decrease weight for set ${sIdx + 1}`}
+                          onClick={() =>
+                            onUpdateSet(
+                              sIdx,
+                              set.reps,
+                              Math.max(0, Number((set.weight - 2.5).toFixed(1)))
+                            )
+                          }
+                          className="h-9 w-9 shrink-0 rounded-xl bg-surface-secondary hover:bg-surface-tertiary text-token-secondary border border-token flex items-center justify-center transition-colors active:scale-95 cursor-pointer"
+                        >
+                          <Minus className="h-3.5 w-3.5" />
+                        </button>
+                        <input
+                          type="number"
+                          min="0"
+                          max="999"
+                          step="0.5"
+                          value={set.weight}
+                          onChange={(e) => {
+                            const val = parseFloat(e.target.value);
+                            onUpdateSet(sIdx, set.reps, isNaN(val) ? 0 : val);
+                          }}
+                          aria-label={`Weight for set ${sIdx + 1} in ${weightUnit}`}
+                          className={`w-16 py-1.5 px-1 text-center input-token rounded-xl text-sm font-mono font-bold ${
+                            set.weight < 0 || set.weight > 999
+                              ? 'border-[#ffb4ab] text-[#ffb4ab] bg-[#ffb4ab]/10 focus:ring-[#ffb4ab]'
+                              : ''
+                          }`}
+                        />
+                        <button
+                          type="button"
+                          aria-label={`Increase weight for set ${sIdx + 1}`}
+                          onClick={() =>
+                            onUpdateSet(
+                              sIdx,
+                              set.reps,
+                              Number((set.weight + 2.5).toFixed(1))
+                            )
+                          }
+                          className="h-9 w-9 shrink-0 rounded-xl bg-surface-secondary hover:bg-surface-tertiary text-token-secondary border border-token flex items-center justify-center transition-colors active:scale-95 cursor-pointer"
+                        >
+                          <Plus className="h-3.5 w-3.5" />
+                        </button>
+                      </div>
+                      {(set.weight < 0 || set.weight > 999) && (
+                        <span className="text-[10px] text-[#ffb4ab] font-mono mt-0.5">
+                          Load must be 0–999 {weightUnit}
+                        </span>
+                      )}
                     </div>
                   </td>
 

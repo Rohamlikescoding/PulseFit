@@ -16,13 +16,30 @@ import {
   Plus,
   Trash2,
 } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { ExerciseDetailModal } from '../ExerciseDetailModal';
+import { WorkoutsViewSkeleton } from '../skeleton/PageSkeleton';
 
 interface WorkoutsViewProps {
-  onNavigateTab: (tab: TabSection) => void;
+  onNavigateTab?: (tab: TabSection) => void;
+  isLoading?: boolean;
 }
 
-export const WorkoutsView: React.FC<WorkoutsViewProps> = ({ onNavigateTab }) => {
+export const WorkoutsView: React.FC<WorkoutsViewProps> = ({ onNavigateTab, isLoading = false }) => {
+  const navigate = useNavigate();
+  const navigateTo = (tab: TabSection) => {
+    if (onNavigateTab) {
+      onNavigateTab(tab);
+    } else {
+      const map: Record<TabSection, string> = {
+        main: '/',
+        workouts: '/workouts',
+        timer: '/timer',
+        dashboard: '/dashboard',
+      };
+      navigate(map[tab] || '/');
+    }
+  };
   const [selectedExerciseId, setSelectedExerciseId] = useState<string | null>(null);
   const [expandedRoutineId, setExpandedRoutineId] = useState<string | null>(null);
   const {
@@ -34,10 +51,15 @@ export const WorkoutsView: React.FC<WorkoutsViewProps> = ({ onNavigateTab }) => 
     deleteRoutine,
     setActiveRoutineId,
     startSession,
+    isHydrated,
   } = useWorkoutStore();
 
   const [isBuildingRoutine, setIsBuildingRoutine] = useState(false);
   const [editingRoutine, setEditingRoutine] = useState<Routine | null>(null);
+
+  if (isLoading || (!isHydrated && routines.length === 0)) {
+    return <WorkoutsViewSkeleton />;
+  }
 
   // If in an active session, render the SessionLogger
   if (activeSession) {
@@ -46,7 +68,7 @@ export const WorkoutsView: React.FC<WorkoutsViewProps> = ({ onNavigateTab }) => 
         onFinish={() => {
           // Handled in store
         }}
-        onNavigateTimer={() => onNavigateTab('timer')}
+        onNavigateTimer={() => navigateTo('timer')}
       />
     );
   }

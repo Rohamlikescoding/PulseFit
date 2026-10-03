@@ -18,16 +18,26 @@ import {
   Volume2,
 } from 'lucide-react';
 import { formatDisplayDate } from '../../lib/schedule';
+import { DashboardViewSkeleton } from '../skeleton/PageSkeleton';
 
-export const DashboardView: React.FC = () => {
+interface DashboardViewProps {
+  isLoading?: boolean;
+}
+
+export const DashboardView: React.FC<DashboardViewProps> = ({ isLoading = false }) => {
   const {
     sessionLogs,
     settings,
     updateSettings,
     deleteSessionLog,
     resetAllData,
+    isHydrated,
   } = useWorkoutStore();
   const { soundEnabled, toggleSound } = useTimerStore();
+
+  if (isLoading || (!isHydrated && sessionLogs.length === 0)) {
+    return <DashboardViewSkeleton />;
+  }
 
   const isLight =
     settings.theme === 'light' ||

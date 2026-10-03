@@ -3,6 +3,7 @@ import { BODY_PARTS } from '../data/exercisesData';
 import { fetchExercises, getExerciseApiStatus } from '../lib/exerciseApi';
 import { Exercise } from '../types/workout';
 import { ExerciseDetailModal } from './ExerciseDetailModal';
+import { ExerciseSearchSkeleton } from './skeleton/PageSkeleton';
 import { Check, Dumbbell, Globe, Info, Key, Loader2, Search, X } from 'lucide-react';
 
 interface ExerciseSearchModalProps {
@@ -145,9 +146,12 @@ export const ExerciseSearchModal: React.FC<ExerciseSearchModalProps> = ({
         {/* Exercise List */}
         <div className="flex-1 overflow-y-auto p-4 sm:p-5 space-y-2.5">
           {isLoading ? (
-            <div className="flex flex-col items-center justify-center py-12 text-token-muted gap-3">
-              <Loader2 className="h-7 w-7 animate-spin text-[#74a87c]" />
-              <p className="text-xs font-mono">Searching exercises...</p>
+            <div className="space-y-3 py-1">
+              <div className="flex items-center gap-2 text-xs text-token-muted px-1 font-mono">
+                <Loader2 className="h-3.5 w-3.5 animate-spin text-[#74a87c]" />
+                <span>Searching botanical exercise catalog...</span>
+              </div>
+              <ExerciseSearchSkeleton count={4} />
             </div>
           ) : errorMessage ? (
             <div className="text-center py-10 px-4">

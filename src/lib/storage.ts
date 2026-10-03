@@ -1,7 +1,8 @@
 /**
  * Storage Abstraction Layer
- * Encapsulates client persistence behind an swappable interface so it can be seamlessly
+ * Encapsulates client persistence behind a swappable interface so it can be seamlessly
  * replaced with IndexedDB, Cloud Firestore, PostgreSQL, or a REST API backend.
+ * Includes defensive guards against corrupted or malformed JSON in localStorage.
  */
 
 export interface StorageAdapter {
@@ -14,7 +15,25 @@ class LocalStorageAdapter implements StorageAdapter {
   getItem(key: string): string | null {
     if (typeof window === 'undefined') return null;
     try {
-      return window.localStorage.getItem(key);
+      const raw = window.localStorage.getItem(key);
+      if (!raw) return null;
+
+      // Defensive JSON syntax validation: prevent malformed data from crashing the app
+      if (raw.startsWith('{') || raw.startsWith('[')) {
+        try {
+          JSON.parse(raw);
+        } catch (parseErr) {
+          console.warn(`[StorageAdapter] Corrupted JSON detected for key "${key}", safely purging:`, parseErr);
+          try {
+            window.localStorage.removeItem(key);
+          } catch {
+            // Ignore removal errors
+          }
+          return null;
+        }
+      }
+
+      return raw;
     } catch (err) {
       console.error(`[StorageAdapter] Failed reading key "${key}":`, err);
       return null;
