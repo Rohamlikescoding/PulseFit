@@ -54,7 +54,7 @@ export const routes: RouteObject[] = [
 ];
 
 // Production browser router
-export const router = createBrowserRouter(routes);
+export const router = createBrowserRouter(routes, {basename: import.meta.env.BASE_URL});
 
 // Factory for testing deep links and route transitions with memory router
 export function createAppMemoryRouter(initialEntries: string[] = ['/']) {
