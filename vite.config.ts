@@ -307,6 +307,7 @@ function exerciseApiPlugin(): Plugin {
 
 export default defineConfig(() => {
   return {
+    base: '/PulseFit/', 
     plugins: [react(), tailwindcss(), exerciseApiPlugin()],
     resolve: {
       alias: {
