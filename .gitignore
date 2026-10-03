@@ -1,0 +1,27 @@
+# Python
+__pycache__/
+*.py[cod]
+
+# Virtual env
+.venv/
+
+
+.idea
+# Secrets
+.env
+
+# Local database & static
+db.sqlite3
+staticfiles/
+
+# Tests
+.pytest_cache/
+.coverage
+htmlcov/
+
+# IDE
+.idea/
+.vscode/
+
+# Uploads
+media/
