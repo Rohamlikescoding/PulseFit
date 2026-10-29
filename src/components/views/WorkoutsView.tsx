@@ -24,6 +24,7 @@ import { useRouter } from 'next/navigation';
 import { ExerciseDetailModal } from '../ExerciseDetailModal';
 import { WorkoutsViewSkeleton } from '../skeleton/PageSkeleton';
 import { prefetchExerciseDetail } from '../../lib/queryClient';
+import { CoachSuggestions } from '../CoachSuggestions';
 
 interface WorkoutsViewProps {
   onNavigateTab?: (tab: TabSection) => void;
@@ -292,6 +293,9 @@ export const WorkoutsView: React.FC<WorkoutsViewProps> = ({
           </div>
         </div>
       )}
+
+      {/* Suggested coaches */}
+      <CoachSuggestions />
 
       {/* All Saved Routines List */}
       <div className="space-y-4">

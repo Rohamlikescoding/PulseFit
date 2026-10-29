@@ -1,9 +1,7 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import { Providers } from './providers';
-import { Nav } from '../src/components/Nav';
-import { FloatingBar } from '../src/components/FloatingBar';
-import { NotificationHost } from '../src/components/NotificationHost';
+import { AppShell } from '../src/components/AppShell';
 import { ScrollToTop } from '../src/components/ScrollToTop';
 
 export const metadata: Metadata = {
@@ -29,14 +27,7 @@ export default function RootLayout({
       <body className="min-h-screen bg-app text-token-primary selection:bg-[#74a87c]/30 selection:text-[#9dd3a4] transition-colors duration-200">
         <Providers>
           <ScrollToTop />
-          <div className="flex flex-col min-h-screen">
-            <Nav />
-            <NotificationHost />
-            <main id="main-content" className="flex-1 px-4 sm:px-8 pt-6 pb-28 focus:outline-none">
-              {children}
-            </main>
-            <FloatingBar />
-          </div>
+          <AppShell>{children}</AppShell>
         </Providers>
       </body>
     </html>

@@ -6,7 +6,8 @@ import { usePathname } from "next/navigation";
 import { TabSection } from "../types/workout";
 import { useWorkoutStore } from "../store/workoutStore";
 import { useTimerStore } from "../store/timerStore";
-import { Dumbbell, Leaf, Moon, Sun, Timer as TimerIcon } from "lucide-react";
+import { Dumbbell, Leaf, LogIn, LogOut, Moon, ShieldCheck, Sun, Timer as TimerIcon } from "lucide-react";
+import { useAuthStore } from "../store/authStore";
 import {
   prefetchRouteChunk,
   prefetchExercisesData,
@@ -22,7 +23,10 @@ export const Nav: React.FC<NavProps> = ({ currentTab, onSelectTab }) => {
   const pathname = usePathname();
   const { activeSession, settings, updateSettings, routines, activeRoutineId } =
     useWorkoutStore();
-  const { isRunning } = useTimerStore();
+  const isRunning = useTimerStore((s) => s.isRunning);
+  const authStatus = useAuthStore((s) => s.status);
+  const session = useAuthStore((s) => s.session);
+  const logout = useAuthStore((s) => s.logout);
 
   const handlePrefetch = (path: string) => {
     prefetchRouteChunk(path);
@@ -156,6 +160,46 @@ export const Nav: React.FC<NavProps> = ({ currentTab, onSelectTab }) => {
               <Sun className="h-4 w-4 text-[#d9c3a5]" />
             )}
           </button>
+
+          {/* Account: Log in, or who you are + log out */}
+          {authStatus === "ready" &&
+            (session ? (
+              <div className="flex items-center gap-1.5">
+                {session.role === "coach" ? (
+                  <Link
+                    href="/coach"
+                    className="px-3 py-2 text-xs font-semibold rounded-xl btn-secondary-token flex items-center gap-1.5 whitespace-nowrap"
+                  >
+                    <ShieldCheck className="h-3.5 w-3.5" />
+                    <span className="hidden sm:inline">Coach app</span>
+                  </Link>
+                ) : (
+                  <span
+                    className="hidden sm:flex h-9 px-3 items-center text-xs font-semibold text-token-secondary rounded-xl border border-token max-w-[9rem] truncate"
+                    title={session.user.email}
+                  >
+                    {session.user.name.split(" ")[0]}
+                  </span>
+                )}
+                <button
+                  type="button"
+                  onClick={() => logout()}
+                  aria-label="Log out"
+                  title="Log out"
+                  className="p-2.5 rounded-xl text-token-secondary hover:text-token-primary hover:bg-surface-tertiary border border-token transition-colors cursor-pointer"
+                >
+                  <LogOut className="h-4 w-4" />
+                </button>
+              </div>
+            ) : (
+              <Link
+                href="/login"
+                className="px-3.5 py-2 text-xs font-semibold rounded-xl btn-secondary-token flex items-center gap-1.5 whitespace-nowrap"
+              >
+                <LogIn className="h-3.5 w-3.5" />
+                <span>Log in</span>
+              </Link>
+            ))}
 
           {activeSession ? (
             <Link

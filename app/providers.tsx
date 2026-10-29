@@ -4,12 +4,18 @@ import React, { useEffect } from 'react';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { queryClient, scheduleIdlePrefetch } from '../src/lib/queryClient';
 import { useWorkoutStore } from '../src/store/workoutStore';
+import { useAuthStore } from '../src/store/authStore';
 
 export function Providers({ children }: { children: React.ReactNode }) {
   const { settings } = useWorkoutStore();
   // Load persisted workout data on the client after mount (store uses skipHydration).
   useEffect(() => {
     useWorkoutStore.persist.rehydrate();
+  }, []);
+
+  // Load the server session (httpOnly cookie) into the client cache.
+  useEffect(() => {
+    useAuthStore.getState().refresh();
   }, []);
 
   useEffect(() => {

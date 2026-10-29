@@ -19,7 +19,7 @@ export const FloatingBar: React.FC<FloatingBarProps> = ({
   onSelectTab,
 }) => {
   const pathname = usePathname();
-  const { isRunning } = useTimerStore();
+  const isRunning = useTimerStore((s) => s.isRunning);
   const { activeSession, settings } = useWorkoutStore();
 
   const isLight =
