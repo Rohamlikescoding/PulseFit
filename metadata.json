@@ -1,0 +1,6 @@
+{
+  "name": "ApexFit - Personal Training Center",
+  "description": "Comprehensive personal training center for custom workout routines, set logging, interval timers, streak tracking, and performance analytics.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

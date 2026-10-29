@@ -1,0 +1,425 @@
+@import "tailwindcss";
+
+@layer base {
+  :root,
+  html.dark,
+  [data-theme="dark"] {
+    /* =========================================================================
+       Botanical Sanctuaria (Dark Mode Theme)
+       ========================================================================= */
+    --color-bg-app: #0e1511;
+    --color-surface-dim: #0e1511;
+    --color-surface: #1a211d;
+    --color-surface-secondary: #161d19;
+    --color-surface-tertiary: #242c27;
+    --color-surface-highest: #2f3632;
+    --color-surface-bright: #343b36;
+
+    --color-border: #414941;
+    --color-border-subtle: rgba(221, 228, 222, 0.08);
+    --color-border-strong: #8b9389;
+    --color-outline: #8b9389;
+    --color-outline-variant: #414941;
+
+    --color-text-primary: #dde4de;
+    --color-text-secondary: #c1c9be;
+    --color-text-muted: #8b9389;
+    --color-text-subtle: #5c655b;
+
+    /* Primary: Deep Sage (#9DD3A4 / #74A87C) */
+    --color-primary: #9dd3a4;
+    --color-on-primary: #023918;
+    --color-primary-container: #74a87c;
+    --color-on-primary-container: #063c1b;
+
+    /* Secondary: Warm Bamboo (#D9C3A5 / #564730) */
+    --color-secondary: #d9c3a5;
+    --color-on-secondary: #3c2e19;
+    --color-secondary-container: #564730;
+    --color-on-secondary-container: #cbb598;
+
+    /* Tertiary: Soft Matcha (#AAD1A2 / #80A67A) */
+    --color-tertiary: #aad1a2;
+    --color-on-tertiary: #163716;
+    --color-tertiary-container: #80a67a;
+    --color-on-tertiary-container: #193b19;
+
+    /* Accent Clay: Terracotta (#C47B62) */
+    --color-accent-clay: #c47b62;
+
+    /* Error / Alert */
+    --color-error: #ffb4ab;
+    --color-on-error: #690005;
+    --color-error-container: #93000a;
+    --color-on-error-container: #ffdad6;
+
+    --color-accent-subtle: rgba(116, 168, 124, 0.14);
+    --color-accent-border: rgba(116, 168, 124, 0.28);
+    --color-accent-text: #9dd3a4;
+    --color-accent-text-hover: #b9f0bf;
+    --color-accent-badge-bg: rgba(116, 168, 124, 0.16);
+    --color-accent-badge-border: rgba(116, 168, 124, 0.32);
+
+    --color-nav-active-bg: rgba(116, 168, 124, 0.16);
+    --color-nav-active-text: #9dd3a4;
+
+    --color-input-bg: rgba(19, 24, 21, 0.65);
+    --color-input-border: #242c27;
+    --color-input-text: #dde4de;
+    --color-input-placeholder: #8b9389;
+
+    --color-btn-secondary-bg: rgba(217, 195, 165, 0.08);
+    --color-btn-secondary-hover: rgba(217, 195, 165, 0.16);
+    --color-btn-secondary-border: rgba(217, 195, 165, 0.26);
+    --color-btn-secondary-text: #d9c3a5;
+
+    --color-streak-gradient-start: rgba(116, 168, 124, 0.14);
+    --color-streak-gradient-end: #1a211d;
+
+    --color-chart-grid: #242c27;
+    --color-chart-axis: #8b9389;
+  }
+
+  html.light,
+  [data-theme="light"] {
+    /* =========================================================================
+       Soma Kanso Atelier (Light Mode Theme)
+       ========================================================================= */
+    --color-bg-app: #fdf9f0;
+    --color-surface-dim: #dddad1;
+    --color-surface: #ffffff;
+    --color-surface-secondary: #f7f3ea;
+    --color-surface-tertiary: #f1ede5;
+    --color-surface-high: #ece8df;
+    --color-surface-highest: #e6e2d9;
+    --color-surface-bright: #fdf9f0;
+
+    --color-border: #cdc5bc;
+    --color-border-subtle: #e2ddd3;
+    --color-border-strong: #7c766e;
+    --color-outline: #7c766e;
+    --color-outline-variant: #cdc5bc;
+
+    --color-text-primary: #1c1c16;
+    --color-text-secondary: #4b463f;
+    --color-text-muted: #7c766e;
+    --color-text-subtle: #9c968e;
+
+    /* Primary: Espresso Obsidian (#000000 / #1D1B18) */
+    --color-primary: #1d1b18;
+    --color-on-primary: #ffffff;
+    --color-primary-container: #1d1b18;
+    --color-on-primary-container: #87837f;
+
+    /* Secondary: Oxidized Lichen Olive (#466645 / #2D4C2D) */
+    --color-secondary: #466645;
+    --color-on-secondary: #ffffff;
+    --color-secondary-container: #c5eabf;
+    --color-on-secondary-container: #4a6a49;
+
+    /* Tertiary: Warm Ochre Clay (#B25E29 / #C56D36) */
+    --color-tertiary: #c56d36;
+    --color-on-tertiary: #ffffff;
+    --color-tertiary-container: #331200;
+    --color-on-tertiary-container: #c56d36;
+
+    /* Accent Clay: Warm Ochre (#B25E29) */
+    --color-accent-clay: #b25e29;
+
+    /* Error / Alert */
+    --color-error: #ba1a1a;
+    --color-on-error: #ffffff;
+    --color-error-container: #ffdad6;
+    --color-on-error-container: #93000a;
+
+    --color-accent-subtle: #f1ede5;
+    --color-accent-border: #cdc5bc;
+    --color-accent-text: #1d1b18;
+    --color-accent-text-hover: #466645;
+    --color-accent-badge-bg: #ece8df;
+    --color-accent-badge-border: #cdc5bc;
+
+    --color-nav-active-bg: #ece8df;
+    --color-nav-active-text: #1d1b18;
+
+    --color-input-bg: #f7f3ea;
+    --color-input-border: #cdc5bc;
+    --color-input-text: #1c1c16;
+    --color-input-placeholder: #7c766e;
+
+    --color-btn-secondary-bg: #ffffff;
+    --color-btn-secondary-hover: #f7f3ea;
+    --color-btn-secondary-border: #cdc5bc;
+    --color-btn-secondary-text: #1c1c16;
+
+    --color-streak-gradient-start: #f7f3ea;
+    --color-streak-gradient-end: #ffffff;
+
+    --color-chart-grid: #e6e2d9;
+    --color-chart-axis: #7c766e;
+  }
+
+  body {
+    background-color: var(--color-bg-app);
+    color: var(--color-text-primary);
+    font-family: 'Plus Jakarta Sans', 'Hanken Grotesk', system-ui, -apple-system, sans-serif;
+    transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+  }
+
+  .font-serif-editorial {
+    font-family: 'Newsreader', Georgia, serif;
+    font-feature-settings: 'cv01', 'cv02';
+  }
+
+  .font-space {
+    font-family: 'Space Grotesk', 'Plus Jakarta Sans', sans-serif;
+  }
+
+  .font-mono {
+    font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+/* Custom scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-border-strong);
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-text-muted);
+}
+
+/* Semantic Utility Classes */
+.bg-app {
+  background-color: var(--color-bg-app);
+}
+
+.bg-surface {
+  background-color: var(--color-surface);
+}
+
+.bg-surface-secondary {
+  background-color: var(--color-surface-secondary);
+}
+
+.bg-surface-tertiary {
+  background-color: var(--color-surface-tertiary);
+}
+
+.border-token {
+  border-color: var(--color-border);
+}
+
+.border-token-strong {
+  border-color: var(--color-border-strong);
+}
+
+.text-token-primary {
+  color: var(--color-text-primary);
+}
+
+.text-token-secondary {
+  color: var(--color-text-secondary);
+}
+
+.text-token-muted {
+  color: var(--color-text-muted);
+}
+
+.text-token-subtle {
+  color: var(--color-text-subtle);
+}
+
+.text-accent-brand {
+  color: var(--color-primary);
+}
+
+.text-accent-bamboo {
+  color: var(--color-secondary);
+}
+
+.text-accent-matcha {
+  color: var(--color-tertiary);
+}
+
+.bg-accent-subtle {
+  background-color: var(--color-accent-subtle);
+}
+
+.border-accent-token {
+  border-color: var(--color-accent-border);
+}
+
+/* Botanical Sanctuaria Frosted Glass Card */
+.card-token {
+  background-color: rgba(26, 33, 29, 0.76);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--color-border);
+  color: var(--color-text-primary);
+  border-radius: 1rem;
+  box-shadow: 0 4px 20px 0 rgba(7, 12, 9, 0.28);
+}
+
+/* Soma Kanso Atelier Light Card */
+html.light .card-token {
+  background-color: #ffffff;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  border: 1px solid #cdc5bc;
+  color: #1c1c16;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 10px 0 rgba(26, 24, 21, 0.04);
+}
+
+/* Ambient Floor Glow */
+.glow-sanctuary {
+  box-shadow: 0 8px 32px rgba(116, 168, 124, 0.16);
+}
+
+html.light .glow-sanctuary {
+  box-shadow: 0 8px 32px -4px rgba(26, 24, 21, 0.06);
+}
+
+/* Primary Action Button */
+.btn-primary-token {
+  background-color: var(--color-primary-container);
+  color: var(--color-on-primary);
+  font-weight: 700;
+  transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 16px 0 rgba(116, 168, 124, 0.22);
+}
+.btn-primary-token:hover:not(:disabled) {
+  opacity: 0.92;
+  box-shadow: 0 6px 20px 0 rgba(116, 168, 124, 0.32);
+}
+.btn-primary-token:active:not(:disabled) {
+  transform: scale(0.98);
+}
+.btn-primary-token:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* Soma Kanso Light Primary Button */
+html.light .btn-primary-token {
+  background-color: #1d1b18;
+  color: #ffffff;
+  border-radius: 0.375rem;
+  box-shadow: 0 2px 8px 0 rgba(26, 24, 21, 0.12);
+}
+html.light .btn-primary-token:hover:not(:disabled) {
+  background-color: #31302b;
+  box-shadow: 0 4px 12px 0 rgba(26, 24, 21, 0.18);
+}
+
+/* Secondary Button */
+.btn-secondary-token {
+  background-color: var(--color-btn-secondary-bg);
+  color: var(--color-btn-secondary-text);
+  border: 1px solid var(--color-btn-secondary-border);
+  font-weight: 600;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: all 0.18s ease;
+}
+.btn-secondary-token:hover:not(:disabled) {
+  background-color: var(--color-btn-secondary-hover);
+  color: var(--color-text-primary);
+}
+.btn-secondary-token:active:not(:disabled) {
+  transform: scale(0.98);
+}
+.btn-secondary-token:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+html.light .btn-secondary-token {
+  background-color: #ffffff;
+  color: #1c1c16;
+  border: 1px solid #cdc5bc;
+  border-radius: 0.375rem;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+html.light .btn-secondary-token:hover:not(:disabled) {
+  background-color: #f7f3ea;
+  border-color: #1d1b18;
+}
+
+/* Tactile Checkpoints (24px rounded square with 6px corner radii) */
+.checkpoint-box {
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: pointer;
+  border: 1.5px solid var(--color-outline-variant);
+  background-color: rgba(19, 24, 21, 0.5);
+}
+.checkpoint-box.checked {
+  background-color: #74a87c;
+  border-color: #74a87c;
+  box-shadow: 0 0 12px rgba(116, 168, 124, 0.35);
+}
+
+html.light .checkpoint-box {
+  border: 1.5px solid #cdc5bc;
+  background-color: #f7f3ea;
+  border-radius: 4px;
+}
+html.light .checkpoint-box.checked {
+  background-color: #1d1b18;
+  border-color: #1d1b18;
+  box-shadow: 0 0 8px rgba(29, 27, 24, 0.2);
+}
+
+/* Form Inputs */
+.input-token {
+  background-color: var(--color-input-bg);
+  border: 1px solid var(--color-input-border);
+  color: var(--color-input-text);
+  transition: border-color 0.18s ease, box-shadow 0.18s ease;
+}
+.input-token::placeholder {
+  color: var(--color-input-placeholder);
+}
+.input-token:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(157, 211, 164, 0.18);
+}
+
+html.light .input-token:focus {
+  border-color: #b25e29;
+  box-shadow: 0 0 0 2px rgba(178, 94, 41, 0.15);
+}
+
+/* Subtle Pulsing for Mindful Interval Flow */
+@keyframes zenPulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.85;
+  }
+  50% {
+    transform: scale(1.04);
+    opacity: 1;
+  }
+}
+
+.zen-breath-pulse {
+  animation: zenPulse 4s ease-in-out infinite;
+}
