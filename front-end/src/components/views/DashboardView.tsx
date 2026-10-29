@@ -315,7 +315,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
               <Sun
                 className={`h-3.5 w-3.5 ${isLight ? "text-[#c56d36]" : "text-[#d9c3a5]"}`}
               />
-              <span>Sanctuary Environment</span>
+              <span>Environment</span>
             </label>
             <div className="flex items-center gap-1.5 bg-surface-secondary p-1 border border-token rounded-xl">
               <button
@@ -329,7 +329,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                 title="Botanical Sanctuaria (Dark Pine Slate)"
               >
                 <Moon className="h-3.5 w-3.5" />
-                <span>Pine Dark</span>
+                <span>Dark</span>
               </button>
 
               <button
@@ -343,7 +343,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                 title="Botanical Sanctuaria (Light Chalk)"
               >
                 <Sun className="h-3.5 w-3.5" />
-                <span>Sanctuary Light</span>
+                <span>Light</span>
               </button>
 
               <button
