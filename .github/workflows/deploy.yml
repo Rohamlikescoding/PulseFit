@@ -1,26 +1,57 @@
-name: Deploy
+name: Deploy Front-End
+
 on:
   push:
-    branches: [main]
+    branches:
+      - main
+    paths:
+      - "front-end/**"
+      - ".github/workflows/deploy.yml"
+
+  workflow_dispatch:
+
 permissions:
   contents: read
   pages: write
   id-token: write
+
+concurrency:
+  group: github-pages
+  cancel-in-progress: true
+
 jobs:
   deploy:
+    name: Build and Deploy
     runs-on: ubuntu-latest
+
     environment:
       name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
         with:
           node-version: 22
-      - run: npm install -g npm@latest
-      - run: npm install
-      - run: npm run build
-      - run: cp dist/index.html dist/404.html
-      - uses: actions/upload-pages-artifact@v3
+          cache: npm
+          cache-dependency-path: front-end/package-lock.json
+
+      - name: Install dependencies
+        working-directory: front-end
+        run: npm ci
+
+      - name: Build static export
+        working-directory: front-end
+        run: npm run build
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
         with:
-          path: dist   # use "build" for Create React App
-      - uses: actions/deploy-pages@v4
+          path: front-end/out
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
